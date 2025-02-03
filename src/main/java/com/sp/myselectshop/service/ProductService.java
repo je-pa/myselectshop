@@ -4,6 +4,7 @@ import com.sp.myselectshop.dto.ProductRequestDto;
 import com.sp.myselectshop.dto.ProductResponseDto;
 import com.sp.myselectshop.entity.Product;
 import com.sp.myselectshop.dto.ProductMypriceRequestDto;
+import com.sp.myselectshop.naver.dto.ItemDto;
 import com.sp.myselectshop.repository.ProductRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ public class ProductService {
   }
 
   @Transactional
-  public ProductResponseDto updateProduct(int id, ProductMypriceRequestDto productRequestDto) {
+  public ProductResponseDto updateProduct(Long id, ProductMypriceRequestDto productRequestDto) {
     int myPrice = productRequestDto.getMyprice();
     if(myPrice < MIN_MY_PRICE){
       throw new IllegalArgumentException("최소 " + MIN_MY_PRICE + "원 이상으로 설정해 주세요.");
@@ -47,5 +48,13 @@ public class ProductService {
     }
 
     return productResponseDtoList;
+  }
+
+  @Transactional
+  public void updateBySearch(Long id, ItemDto itemDto) {
+    Product product = productRepository.findById(id).orElseThrow(() ->
+        new NullPointerException("해당 상품은 없습니다.")
+    );
+    product.updateByItemDto(itemDto);
   }
 }
