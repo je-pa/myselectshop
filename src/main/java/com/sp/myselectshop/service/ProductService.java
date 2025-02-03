@@ -5,11 +5,17 @@ import com.sp.myselectshop.dto.ProductResponseDto;
 import com.sp.myselectshop.entity.Product;
 import com.sp.myselectshop.dto.ProductMypriceRequestDto;
 import com.sp.myselectshop.entity.User;
+import com.sp.myselectshop.entity.UserRoleEnum;
 import com.sp.myselectshop.naver.dto.ItemDto;
 import com.sp.myselectshop.repository.ProductRepository;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,26 +46,24 @@ public class ProductService {
     return new ProductResponseDto(product);
   }
 
-  public List<ProductResponseDto> getProducts(User user) {
-    List<Product> productList = productRepository.findAllByUser(user);
-    List<ProductResponseDto> productResponseDtoList = new ArrayList<>();
+  public Page<ProductResponseDto> getProducts(User user, int page, int size, String sortBy,
+      boolean isAsc) {
 
-    for (Product product : productList) {
-      productResponseDtoList.add(new ProductResponseDto(product));
+    Sort.Direction direction = isAsc ? Sort.Direction.ASC : Direction.DESC;
+    Sort sort = Sort.by(direction, sortBy);
+    Pageable pageable = PageRequest.of(page, size, sort);
+
+    UserRoleEnum userRoleEnum = user.getRole();
+
+    Page<Product> productList;
+
+    if(userRoleEnum == UserRoleEnum.USER){
+      productList = productRepository.findAllByUser(user, pageable);
+    } else{
+      productList = productRepository.findAll(pageable);
     }
 
-    return productResponseDtoList;
-  }
-
-  public List<ProductResponseDto> getAllProducts() {
-    List<Product> productList = productRepository.findAll();
-    List<ProductResponseDto> productResponseDtoList = new ArrayList<>();
-
-    for (Product product : productList) {
-      productResponseDtoList.add(new ProductResponseDto(product));
-    }
-
-    return productResponseDtoList;
+    return productList.map(ProductResponseDto::new);
   }
 
   @Transactional
