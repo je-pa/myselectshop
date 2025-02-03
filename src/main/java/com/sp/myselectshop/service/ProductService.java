@@ -4,6 +4,7 @@ import com.sp.myselectshop.dto.ProductRequestDto;
 import com.sp.myselectshop.dto.ProductResponseDto;
 import com.sp.myselectshop.entity.Product;
 import com.sp.myselectshop.dto.ProductMypriceRequestDto;
+import com.sp.myselectshop.entity.User;
 import com.sp.myselectshop.naver.dto.ItemDto;
 import com.sp.myselectshop.repository.ProductRepository;
 import java.util.ArrayList;
@@ -20,8 +21,8 @@ public class ProductService {
 
   public static final int MIN_MY_PRICE = 100;
 
-  public ProductResponseDto createProduct(ProductRequestDto productRequestDto) {
-    Product product = productRepository.save(new Product(productRequestDto));
+  public ProductResponseDto createProduct(ProductRequestDto productRequestDto, User user) {
+    Product product = productRepository.save(new Product(productRequestDto, user));
     return new ProductResponseDto(product);
   }
 
@@ -39,7 +40,18 @@ public class ProductService {
     return new ProductResponseDto(product);
   }
 
-  public List<ProductResponseDto> getProducts() {
+  public List<ProductResponseDto> getProducts(User user) {
+    List<Product> productList = productRepository.findAllByUser(user);
+    List<ProductResponseDto> productResponseDtoList = new ArrayList<>();
+
+    for (Product product : productList) {
+      productResponseDtoList.add(new ProductResponseDto(product));
+    }
+
+    return productResponseDtoList;
+  }
+
+  public List<ProductResponseDto> getAllProducts() {
     List<Product> productList = productRepository.findAll();
     List<ProductResponseDto> productResponseDtoList = new ArrayList<>();
 
