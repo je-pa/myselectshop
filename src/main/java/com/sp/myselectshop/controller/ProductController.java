@@ -48,4 +48,11 @@ public class ProductController {
         );
   }
 
+  @PostMapping("/products/{prodcutId}/folder")
+  public void addFolder(
+      @PathVariable Long prodcutId,
+      @RequestParam Long folderId,
+      @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    productService.addFolder(prodcutId, folderId, userDetails.getUser());
+  }
 }
