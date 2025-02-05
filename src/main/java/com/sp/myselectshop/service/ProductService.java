@@ -1,10 +1,10 @@
 package com.sp.myselectshop.service;
 
+import com.sp.myselectshop.dto.ProductMypriceRequestDto;
 import com.sp.myselectshop.dto.ProductRequestDto;
 import com.sp.myselectshop.dto.ProductResponseDto;
 import com.sp.myselectshop.entity.Folder;
 import com.sp.myselectshop.entity.Product;
-import com.sp.myselectshop.dto.ProductMypriceRequestDto;
 import com.sp.myselectshop.entity.ProductFolder;
 import com.sp.myselectshop.entity.User;
 import com.sp.myselectshop.entity.UserRoleEnum;
@@ -12,8 +12,6 @@ import com.sp.myselectshop.naver.dto.ItemDto;
 import com.sp.myselectshop.repository.FolderRepository;
 import com.sp.myselectshop.repository.ProductFolderRepository;
 import com.sp.myselectshop.repository.ProductRepository;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

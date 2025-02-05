@@ -5,7 +5,6 @@ import com.sp.myselectshop.dto.ProductResponseDto;
 import com.sp.myselectshop.dto.ProductMypriceRequestDto;
 import com.sp.myselectshop.security.UserDetailsImpl;
 import com.sp.myselectshop.service.ProductService;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
